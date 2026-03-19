@@ -2,6 +2,7 @@ name: Feature request
 description: Propose an improvement to XAgent
 labels:
   - enhancement
+  - needs-spec
 body:
   - type: markdown
     attributes:
@@ -32,10 +33,42 @@ body:
     validations:
       required: true
   - type: textarea
+    id: smallest_increment
+    attributes:
+      label: Smallest valuable increment
+      description: Describe the thinnest independently testable slice that would still deliver value.
+      placeholder: Add the adapter scaffold and config loading first, without implementing live runtime execution
+    validations:
+      required: true
+  - type: textarea
     id: alternatives
     attributes:
       label: Alternatives considered
       description: Describe any alternatives or workarounds you have considered
+  - type: textarea
+    id: configuration_impact
+    attributes:
+      label: Configuration impact
+      description: What agent, task, tool, environment, or safety-boundary config would this change require?
+      placeholder: Add a new adapter selection value, update task metadata, or extend allowed tool configuration
+  - type: textarea
+    id: contract_impact
+    attributes:
+      label: Contract impact
+      description: What schemas, factory behavior, tool registration, or adapter contracts could change?
+      placeholder: Extend TaskDefinition, add adapter selection validation, or change TaskResult fields
+  - type: textarea
+    id: observability_safety
+    attributes:
+      label: Observability and safety impact
+      description: What logs, traces, audit signals, or safety boundary changes would be required?
+      placeholder: Add structured execution events and document any new network or filesystem permissions
+  - type: textarea
+    id: rollout_change_control
+    attributes:
+      label: Rollout and change-control notes
+      description: How should this be introduced, verified, and rolled back if needed?
+      placeholder: Land behind config, validate with mock adapter first, then enable the runtime in a follow-up change
   - type: textarea
     id: context
     attributes:

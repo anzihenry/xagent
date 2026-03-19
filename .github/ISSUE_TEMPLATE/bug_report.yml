@@ -40,12 +40,34 @@ body:
       placeholder: The command returned...
     validations:
       required: true
+  - type: textarea
+    id: affected_scope
+    attributes:
+      label: Affected config, contract, or runtime boundary
+      description: Identify any affected YAML config, schema, adapter, tool boundary, or safety policy.
+      placeholder: config/tasks.yaml, TaskDefinition schema, mock adapter boundary, network access policy
+  - type: checkboxes
+    id: governance_impact
+    attributes:
+      label: Governance impact
+      description: Select all impact areas that apply.
+      options:
+        - label: Config or environment behavior is affected
+        - label: Schema, factory, or adapter contract is affected
+        - label: Tool access, filesystem, network, or code execution boundary is affected
+        - label: Logs, traces, auditability, or runtime observability are affected
   - type: input
     id: environment
     attributes:
       label: Environment
       description: OS, Python version, and relevant package versions
       placeholder: macOS 15, Python 3.14, uv 0.10.x
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Current workaround or rollback path
+      description: Describe any mitigation, safe fallback, or rollback option if known.
+      placeholder: Revert to the mock adapter, restore the previous config file, or disable the new task entry
   - type: textarea
     id: logs
     attributes:

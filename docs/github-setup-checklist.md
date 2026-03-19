@@ -189,6 +189,7 @@ Options:
 - `tooling`
 - `docs`
 - `ci`
+- `observability`
 
 ### 7. Iteration
 
@@ -219,6 +220,24 @@ Example values:
 
 - `specs/001-auth-bootstrap/spec.md`
 
+### 10. Change Scope
+
+Field type:
+
+- `Single select`
+
+Options:
+
+- `None`
+- `Config`
+- `Contract`
+- `Safety`
+- `Observability`
+- `Multiple`
+
+Use this field to surface constitution-sensitive changes that require explicit
+review of config impact, contract impact, safety boundaries, or rollback.
+
 ## Recommended Project Views
 
 ### 1. Backlog
@@ -245,14 +264,22 @@ Configuration:
 - Filter: `Type` is `Bug`
 - Group by: `Status`
 
-### 4. Current Iteration
+### 4. Change Control Review
+
+Configuration:
+
+- Layout: `Table`
+- Filter: `Change Scope` is not `None` or label is `change-control`
+- Sort: `Priority` ascending, then `Updated`
+
+### 5. Current Iteration
 
 Configuration:
 
 - Layout: `Board`
 - Filter: current `Iteration`
 
-### 5. Roadmap
+### 6. Roadmap
 
 Configuration:
 
