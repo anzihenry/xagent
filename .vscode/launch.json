@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug XAgent CLI",
+      "type": "debugpy",
+      "request": "launch",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "module": "xagent",
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "--adapter",
+        "mock",
+        "--task",
+        "analyze_topic",
+        "--input-json",
+        "{\"topic\": \"Debug launch\"}",
+        "--config-dir",
+        "config"
+      ]
+    }
+  ]
+}
