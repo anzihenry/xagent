@@ -1,14 +1,14 @@
-# My Agent Enterprise
+# XAgent Framework
 
-A framework-agnostic AI agent skeleton designed to keep core contracts stable while letting execution engines evolve independently.
+XAgent is a framework-agnostic AI agent scaffold designed to keep core contracts stable while letting execution engines evolve independently.
 
 ## Design Goal
 
-This project is intended to be an enterprise-ready starting point for AI agent systems where the business contract should survive framework churn.
+XAgent Framework is intended to be an enterprise-ready starting point for AI agent systems where the business contract should survive framework churn.
 
 The key design constraint is simple: your task schema, tool logic, and configuration should not need to be rewritten because you switch from one orchestration runtime to another.
 
-That is why this scaffold separates the system into:
+That is why XAgent separates the system into:
 
 - a stable core contract layer
 - a YAML-based configuration layer
@@ -18,10 +18,10 @@ That is why this scaffold separates the system into:
 ## Architecture
 
 - `config/`: YAML-driven agent personas and task definitions.
-- `src/my_agent_enterprise/core/`: framework-independent contracts and pure Python tools.
-- `src/my_agent_enterprise/adapters/`: thin wrappers for specific agent runtimes.
-- `src/my_agent_enterprise/factory.py`: configuration loading and adapter selection.
-- `src/my_agent_enterprise/main.py`: CLI entrypoint.
+- `src/xagent/core/`: framework-independent contracts and pure Python tools.
+- `src/xagent/adapters/`: thin wrappers for specific agent runtimes.
+- `src/xagent/factory.py`: configuration loading and adapter selection.
+- `src/xagent/main.py`: CLI entrypoint.
 - `logs/`: runtime traces and step logs.
 
 ## Repository Layout
@@ -36,7 +36,7 @@ xagent/
 │   └── tasks.yaml
 ├── logs/
 ├── src/
-│   └── my_agent_enterprise/
+│   └── xagent/
 │       ├── __main__.py
 │       ├── factory.py
 │       ├── main.py
@@ -102,7 +102,7 @@ cp .env.example .env
 3. Run the default mock adapter:
 
 ```bash
-uv run my-agent-enterprise --adapter mock --task analyze_topic --input-json '{"topic": "LangGraph migration"}'
+uv run xagent --adapter mock --task analyze_topic --input-json '{"topic": "LangGraph migration"}'
 ```
 
 4. Run tests:
@@ -122,13 +122,13 @@ uv run ruff check .
 Run the default task with the mock adapter:
 
 ```bash
-uv run my-agent-enterprise --adapter mock --task analyze_topic --input-json '{"topic": "CrewAI migration strategy"}'
+uv run xagent --adapter mock --task analyze_topic --input-json '{"topic": "CrewAI migration strategy"}'
 ```
 
 Point the CLI at a custom config directory:
 
 ```bash
-uv run my-agent-enterprise --adapter mock --config-dir config --task analyze_topic --input-json '{"topic": "multi-agent observability"}'
+uv run xagent --adapter mock --config-dir config --task analyze_topic --input-json '{"topic": "multi-agent observability"}'
 ```
 
 ## How Configuration Works
@@ -177,14 +177,14 @@ That same flow is expected to remain stable even when a real framework runtime r
 
 ### Add a new tool
 
-1. Create a pure function under `src/my_agent_enterprise/core/tools/`.
+1. Create a pure function under `src/xagent/core/tools/`.
 2. Register it in the tool registry.
 3. Reference it from `config/tasks.yaml`.
 4. Expose it inside a concrete adapter when framework wrapping is required.
 
 ### Add a new adapter
 
-1. Implement the adapter under `src/my_agent_enterprise/adapters/`.
+1. Implement the adapter under `src/xagent/adapters/`.
 2. Inherit from the shared adapter base class.
 3. Keep framework imports isolated to that adapter module.
 4. Register the adapter in `build_adapter`.

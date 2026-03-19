@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from my_agent_enterprise.adapters.base import AgentAdapter
-from my_agent_enterprise.core.schemas import TaskRequest, TaskResult
+from xagent.adapters.base import AgentAdapter
+from xagent.core.schemas import TaskRequest, TaskResult
 
 
 class CrewAIAdapter(AgentAdapter):

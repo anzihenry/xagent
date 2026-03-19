@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Callable, Mapping
 from typing import Any
 
-from my_agent_enterprise.core.schemas import AgentDefinition, TaskDefinition, TaskRequest, TaskResult
+from xagent.core.schemas import AgentDefinition, TaskDefinition, TaskRequest, TaskResult
 
 
 class AgentAdapter(ABC):

@@ -3,7 +3,7 @@ requires = ["hatchling>=1.27.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "my-agent-enterprise"
+name = "xagent"
 version = "0.1.0"
 description = "Framework-agnostic enterprise AI agent skeleton"
 readme = "README.md"
@@ -16,7 +16,7 @@ dependencies = [
 ]
 
 [project.scripts]
-my-agent-enterprise = "my_agent_enterprise.main:main"
+xagent = "xagent.main:main"
 
 [dependency-groups]
 dev = [
@@ -25,7 +25,7 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/my_agent_enterprise"]
+packages = ["src/xagent"]
 
 [tool.ruff]
 line-length = 100

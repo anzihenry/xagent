@@ -1,4 +1,4 @@
-from my_agent_enterprise.main import main
+from xagent.main import main
 
 
 if __name__ == "__main__":

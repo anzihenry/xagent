@@ -4,12 +4,12 @@ from pathlib import Path
 
 import yaml
 
-from my_agent_enterprise.adapters.autogen_impl import AutoGenAdapter
-from my_agent_enterprise.adapters.base import AgentAdapter
-from my_agent_enterprise.adapters.crew_impl import CrewAIAdapter
-from my_agent_enterprise.adapters.mock_impl import MockAdapter
-from my_agent_enterprise.core.schemas import AgentDefinition, TaskDefinition
-from my_agent_enterprise.core.tools import TOOL_REGISTRY
+from xagent.adapters.autogen_impl import AutoGenAdapter
+from xagent.adapters.base import AgentAdapter
+from xagent.adapters.crew_impl import CrewAIAdapter
+from xagent.adapters.mock_impl import MockAdapter
+from xagent.core.schemas import AgentDefinition, TaskDefinition
+from xagent.core.tools import TOOL_REGISTRY
 
 
 def _load_yaml(file_path: Path) -> dict:

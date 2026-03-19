@@ -6,8 +6,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from my_agent_enterprise.core.schemas import TaskRequest
-from my_agent_enterprise.factory import build_adapter
+from xagent.core.schemas import TaskRequest
+from xagent.factory import build_adapter
 
 
 def parse_args() -> argparse.Namespace:

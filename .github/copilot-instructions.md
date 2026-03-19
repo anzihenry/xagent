@@ -3,7 +3,7 @@
 - [x] Scaffold the Project: created a src-layout uv project in the current workspace.
 - [x] Customize the Project: added core contracts, YAML config, adapter layer, factory, CLI, and tests.
 - [x] Install Required Extensions: no extensions required.
-- [x] Compile the Project: `uv sync`, `uv run pytest`, and `uv run my-agent-enterprise ...` succeeded.
+- [x] Compile the Project: `uv sync`, `uv run pytest`, and `uv run xagent ...` succeeded.
 - [x] Create and Run Task: skipped because the current scaffold does not require a VS Code task.
 - [ ] Launch the Project: pending explicit debug-launch confirmation.
 - [x] Ensure Documentation is Complete: README updated and this file cleaned of HTML comments.

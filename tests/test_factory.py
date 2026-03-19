@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from my_agent_enterprise.core.schemas import TaskRequest
-from my_agent_enterprise.factory import build_adapter
+from xagent.core.schemas import TaskRequest
+from xagent.factory import build_adapter
 
 
 def test_mock_adapter_runs_default_task() -> None:
