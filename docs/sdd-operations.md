@@ -366,6 +366,8 @@ These are not mandatory on day one, but they are the next logical improvements:
 3. add label setup automation or a one-time bootstrap script
 4. add a GitHub Action or script that syncs issue labels into Project fields if needed
 
+The concrete GitHub setup checklist for labels, Project fields, and recommended views lives in `docs/github-setup-checklist.md`.
+
 ## Minimal Day-One Operating Model
 
 If you want the smallest workable process, use this:
