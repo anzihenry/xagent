@@ -12,19 +12,16 @@ Use this checklist to configure GitHub so that:
 
 ## Current Label State
 
-The repository currently has the default GitHub labels:
+The repository now includes the delivery labels required by this workflow,
+including:
 
-- `bug`
-- `documentation`
-- `duplicate`
-- `enhancement`
-- `good first issue`
-- `help wanted`
-- `invalid`
-- `question`
-- `wontfix`
+- type labels: `task`, `feature`, `chore`
+- priority labels: `p0`, `p1`, `p2`, `p3`
+- area labels: `area:core`, `area:adapters`, `area:config`, `area:tooling`, `area:docs`, `area:ci`, `area:observability`
+- workflow labels: `blocked`, `needs-spec`, `needs-clarification`, `change-control`
 
-These are not enough for the proposed delivery workflow.
+Keep the default GitHub labels that remain useful for triage, but use the
+workflow-specific labels above as the operating taxonomy for delivery.
 
 ## Recommended Label Taxonomy
 

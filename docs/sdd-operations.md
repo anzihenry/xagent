@@ -296,10 +296,12 @@ Recommended label set:
    - `area:tooling`
    - `area:docs`
    - `area:ci`
+   - `area:observability`
 4. Workflow labels
    - `blocked`
    - `needs-spec`
    - `needs-clarification`
+   - `change-control`
 
 ### Issue Content Rules
 
