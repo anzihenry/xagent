@@ -1,0 +1,8 @@
+tasks:
+  - name: analyze_topic
+    description: Analyze the requested topic and return an execution-ready brief.
+    expected_output: A structured brief with architecture direction, risks, and next steps.
+    agent: strategist
+    tools:
+      - build_research_brief
+    output_schema: TaskResult
