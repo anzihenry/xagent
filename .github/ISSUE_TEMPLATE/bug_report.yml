@@ -1,0 +1,53 @@
+name: Bug report
+description: Report a defect or regression in XAgent
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please provide enough detail for us to reproduce the issue.
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: A short description of the problem
+      placeholder: The mock adapter fails when...
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the exact steps needed to reproduce the issue
+      placeholder: |
+        1. Run...
+        2. Use config...
+        3. Observe...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: The command should return...
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      placeholder: The command returned...
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python version, and relevant package versions
+      placeholder: macOS 15, Python 3.14, uv 0.10.x
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs or output
+      render: shell
