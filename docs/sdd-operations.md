@@ -108,6 +108,7 @@ Once `tasks.md` is stable:
 1. Use `/speckit.taskstoissues` if available in the active agent environment
 2. Create one issue per actionable task or per logical task bundle
 3. Link each issue back to the feature spec identifier in the title or body
+4. Use the optional `after_tasks` hook in `.specify/extensions.yml` to surface issue publication immediately after task generation
 
 Recommended issue title format:
 
@@ -126,7 +127,8 @@ After issues exist:
 
 1. Automatically add new issues to the project
 2. Use Project fields to represent priority, status, iteration, and feature identity
-3. Move work through the Project instead of maintaining a second manual tracker
+3. Let repository automation sync `Type`, `Priority`, `Area`, and `Change Scope` from issue labels
+4. Move work through the Project instead of maintaining a second manual tracker
 
 ### 7. Implement and close
 
@@ -240,12 +242,12 @@ Enable built-in or custom automation for:
 1. auto-add new issues from `anzihenry/xagent`
 2. default `Status = Todo`
 3. archive closed items automatically
+4. repository workflow `.github/workflows/project-field-sync.yml` with a `PROJECT_AUTOMATION_TOKEN` secret to sync issue labels into Project fields
 
 Optional later automation:
 
-1. set `Type = Bug` when label `bug` is present
-2. set `Area` based on labels
-3. add new PRs to project and surface them in the `Review Queue` view
+1. infer `Feature` and `Story` from issue title conventions or body metadata
+2. add new PRs to project and surface them in the `Review Queue` view
 
 ### Status Convention
 
@@ -297,7 +299,12 @@ Recommended label set:
    - `area:docs`
    - `area:ci`
    - `area:observability`
-4. Workflow labels
+4. Scope labels
+   - `scope:config`
+   - `scope:contract`
+   - `scope:safety`
+   - `scope:observability`
+5. Workflow labels
    - `blocked`
    - `needs-spec`
    - `needs-clarification`
@@ -397,7 +404,21 @@ These are not mandatory on day one, but they are the next logical improvements:
 
 1. add a lightweight `specs/README.md` explaining feature directory naming
 2. add label setup automation or a one-time bootstrap script
-3. add a GitHub Action or script that syncs issue labels into Project fields if needed
+3. extend the Project sync workflow if `Feature` and `Story` should also be derived automatically
+
+## Repository Automation Additions
+
+The repository now includes two automation entry points that reduce manual handoff work:
+
+1. `.github/workflows/project-field-sync.yml`
+   - listens to issue events
+   - adds issues to `XAgent Delivery` if needed
+   - synchronizes `Type`, `Priority`, `Area`, and `Change Scope` from labels
+2. `.specify/extensions.yml`
+   - registers an optional `after_tasks` hook
+   - surfaces `/speckit.taskstoissues` immediately after `tasks.md` is generated
+
+These automations do not eliminate the need for human review. They reduce repeated metadata entry and make the Spec Kit to GitHub handoff easier to execute consistently.
 
 The concrete GitHub setup checklist for labels, Project fields, and recommended views lives in `docs/github-setup-checklist.md`.
 

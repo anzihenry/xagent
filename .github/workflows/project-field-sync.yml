@@ -1,0 +1,252 @@
+name: Sync Project Fields
+
+on:
+  issues:
+    types:
+      - opened
+      - edited
+      - reopened
+      - labeled
+      - unlabeled
+
+jobs:
+  sync-project-fields:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: read
+
+    steps:
+      - name: Validate automation token
+        env:
+          PROJECT_AUTOMATION_TOKEN: ${{ secrets['PROJECT_AUTOMATION_TOKEN'] }}
+        run: |
+          if [ -z "$PROJECT_AUTOMATION_TOKEN" ]; then
+            echo "PROJECT_AUTOMATION_TOKEN is not configured." >&2
+            echo "Create a repository secret with repo and project scopes before enabling this workflow." >&2
+            exit 1
+          fi
+
+      - name: Sync GitHub Project fields from issue labels
+        uses: actions/github-script@v7
+        env:
+          PROJECT_NUMBER: '3'
+        with:
+          github-token: ${{ secrets['PROJECT_AUTOMATION_TOKEN'] }}
+          script: |
+            const projectNumber = Number(process.env.PROJECT_NUMBER);
+            const issueNodeId = context.payload.issue.node_id;
+            const labels = new Set((context.payload.issue.labels || []).map((label) => label.name));
+
+            const query = `
+              query ProjectAndIssue($owner: String!, $repo: String!, $projectNumber: Int!, $issueId: ID!) {
+                repository(owner: $owner, name: $repo) {
+                  owner {
+                    __typename
+                    ... on User {
+                      projectV2(number: $projectNumber) {
+                        ...ProjectFields
+                      }
+                    }
+                    ... on Organization {
+                      projectV2(number: $projectNumber) {
+                        ...ProjectFields
+                      }
+                    }
+                  }
+                }
+                node(id: $issueId) {
+                  ... on Issue {
+                    id
+                    number
+                    projectItems(first: 50) {
+                      nodes {
+                        id
+                        project {
+                          id
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+
+              fragment ProjectFields on ProjectV2 {
+                id
+                fields(first: 50) {
+                  nodes {
+                    __typename
+                    ... on ProjectV2FieldCommon {
+                      id
+                      name
+                    }
+                    ... on ProjectV2SingleSelectField {
+                      options {
+                        id
+                        name
+                      }
+                    }
+                  }
+                }
+              }
+            `;
+
+            const result = await github.graphql(query, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              projectNumber,
+              issueId: issueNodeId,
+            });
+
+            const ownerNode = result.repository.owner;
+            const project = ownerNode.projectV2;
+            if (!project) {
+              core.setFailed(`Project ${projectNumber} was not found for ${context.repo.owner}.`);
+              return;
+            }
+
+            const issue = result.node;
+            if (!issue) {
+              core.setFailed(`Issue node ${issueNodeId} was not found.`);
+              return;
+            }
+
+            const fieldByName = new Map(
+              project.fields.nodes
+                .filter((field) => field && field.name)
+                .map((field) => [field.name, field]),
+            );
+
+            const singleSelectOptionId = (fieldName, optionName) => {
+              const field = fieldByName.get(fieldName);
+              if (!field || !field.options) {
+                return null;
+              }
+              const option = field.options.find((entry) => entry.name === optionName);
+              return option ? option.id : null;
+            };
+
+            let item = issue.projectItems.nodes.find((entry) => entry.project && entry.project.id === project.id);
+            if (!item) {
+              const addResult = await github.graphql(`
+                mutation AddItem($projectId: ID!, $contentId: ID!) {
+                  addProjectV2ItemById(input: { projectId: $projectId, contentId: $contentId }) {
+                    item {
+                      id
+                    }
+                  }
+                }
+              `, {
+                projectId: project.id,
+                contentId: issue.id,
+              });
+              item = addResult.addProjectV2ItemById.item;
+            }
+
+            const syncSingleSelect = async (fieldName, optionName) => {
+              const field = fieldByName.get(fieldName);
+              if (!field) {
+                core.warning(`Field ${fieldName} not found on project.`);
+                return;
+              }
+
+              if (!optionName) {
+                await github.graphql(`
+                  mutation ClearField($projectId: ID!, $itemId: ID!, $fieldId: ID!) {
+                    clearProjectV2ItemFieldValue(input: { projectId: $projectId, itemId: $itemId, fieldId: $fieldId }) {
+                      projectV2Item {
+                        id
+                      }
+                    }
+                  }
+                `, {
+                  projectId: project.id,
+                  itemId: item.id,
+                  fieldId: field.id,
+                });
+                return;
+              }
+
+              const optionId = singleSelectOptionId(fieldName, optionName);
+              if (!optionId) {
+                core.warning(`Option ${optionName} not found for field ${fieldName}.`);
+                return;
+              }
+
+              await github.graphql(`
+                mutation UpdateField($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                  updateProjectV2ItemFieldValue(
+                    input: {
+                      projectId: $projectId
+                      itemId: $itemId
+                      fieldId: $fieldId
+                      value: { singleSelectOptionId: $optionId }
+                    }
+                  ) {
+                    projectV2Item {
+                      id
+                    }
+                  }
+                }
+              `, {
+                projectId: project.id,
+                itemId: item.id,
+                fieldId: field.id,
+                optionId,
+              });
+            };
+
+            const pickMappedValue = (entries) => {
+              for (const [label, value] of entries) {
+                if (labels.has(label)) {
+                  return value;
+                }
+              }
+              return null;
+            };
+
+            const typeValue = pickMappedValue([
+              ['bug', 'Bug'],
+              ['task', 'Task'],
+              ['feature', 'Feature'],
+              ['chore', 'Chore'],
+            ]);
+
+            const priorityValue = pickMappedValue([
+              ['p0', 'P0'],
+              ['p1', 'P1'],
+              ['p2', 'P2'],
+              ['p3', 'P3'],
+            ]);
+
+            const areaValue = pickMappedValue([
+              ['area:core', 'core'],
+              ['area:adapters', 'adapters'],
+              ['area:config', 'config'],
+              ['area:tooling', 'tooling'],
+              ['area:docs', 'docs'],
+              ['documentation', 'docs'],
+              ['area:ci', 'ci'],
+              ['area:observability', 'observability'],
+            ]);
+
+            const scopeMatches = [
+              ['scope:config', 'Config'],
+              ['scope:contract', 'Contract'],
+              ['scope:safety', 'Safety'],
+              ['scope:observability', 'Observability'],
+            ].filter(([label]) => labels.has(label)).map(([, value]) => value);
+
+            let changeScopeValue = null;
+            if (scopeMatches.length === 1) {
+              changeScopeValue = scopeMatches[0];
+            } else if (scopeMatches.length > 1) {
+              changeScopeValue = 'Multiple';
+            }
+
+            await syncSingleSelect('Type', typeValue);
+            await syncSingleSelect('Priority', priorityValue);
+            await syncSingleSelect('Area', areaValue);
+            await syncSingleSelect('Change Scope', changeScopeValue);
+
+            core.info(`Synchronized project fields for issue #${issue.number}.`);

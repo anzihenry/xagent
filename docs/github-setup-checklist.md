@@ -18,6 +18,7 @@ including:
 - type labels: `task`, `feature`, `chore`
 - priority labels: `p0`, `p1`, `p2`, `p3`
 - area labels: `area:core`, `area:adapters`, `area:config`, `area:tooling`, `area:docs`, `area:ci`, `area:observability`
+- scope labels: `scope:config`, `scope:contract`, `scope:safety`, `scope:observability`
 - workflow labels: `blocked`, `needs-spec`, `needs-clarification`, `change-control`
 
 Keep the default GitHub labels that remain useful for triage, but use the
@@ -81,6 +82,17 @@ Add these labels:
 | `needs-clarification` | Spec or issue is underspecified |
 | `change-control` | Reviewer attention required for config, contract, or safety-impacting changes |
 
+### Scope Labels
+
+Add these labels:
+
+| Label | Purpose |
+| --- | --- |
+| `scope:config` | Change affects YAML or environment configuration semantics |
+| `scope:contract` | Change affects schema, factory, adapter, or tool contracts |
+| `scope:safety` | Change affects tool, filesystem, network, or code execution boundaries |
+| `scope:observability` | Change affects logs, tracing, auditability, or runtime evidence |
+
 ## Label Rollout Order
 
 Recommended rollout order:
@@ -88,7 +100,8 @@ Recommended rollout order:
 1. Type labels
 2. Priority labels
 3. Area labels
-4. Workflow labels
+4. Scope labels
+5. Workflow labels
 
 This keeps issue triage usable even if the full Project setup is not complete yet.
 
@@ -304,15 +317,15 @@ Configure these first:
 1. auto-add issues from repository `anzihenry/xagent`
 2. default new items to `Status = Todo`
 3. archive closed items automatically
+4. add repository secret `PROJECT_AUTOMATION_TOKEN` with `repo` and `project` scopes
 
 ### Optional Follow-Up Automations
 
 Add later with Actions or API if needed:
 
-1. set `Type = Bug` when label `bug` is present
-2. set `Area = docs` when label `documentation` is present
+1. run `.github/workflows/project-field-sync.yml` to sync `Type`, `Priority`, `Area`, and `Change Scope` from issue labels
+2. apply `scope:*` labels during issue triage so `Change Scope` can be filled automatically
 3. surface linked-PR work in the `Review Queue` view
-4. sync issue labels into Project fields
 
 ## Issue Creation Rules
 
@@ -330,6 +343,7 @@ Optional metadata:
 
 - `Priority`
 - `Area`
+- one or more `scope:*` labels when config, contract, safety, or observability is affected
 - `Target Release`
 
 ### Feature Parent Issues
@@ -352,6 +366,7 @@ Required metadata:
 - label `task`
 - one `area:*` label
 - one priority label
+- `scope:*` labels when config, contract, safety, or observability is affected
 - `Type = Task`
 - `Feature = <feature-key>`
 - `Story = <US#>` when applicable
@@ -390,6 +405,7 @@ Complete these in order:
 3. every implementation issue should reference a feature key
 4. bugs do not bypass the issue form
 5. Projects reflects status; spec documents reflect intent
+6. issue labels are the source of truth for automated `Type`, `Priority`, `Area`, and `Change Scope` field sync
 
 ## Status Convention
 
@@ -410,5 +426,5 @@ second status field.
 
 1. bootstrap labels using `gh label create`
 2. create issue templates for `task` and `feature`
-3. automate Project field assignment with GitHub Actions or GraphQL
+3. extend Project sync automation to infer `Feature` and `Story` from issue titles or body metadata
 4. add a small script that validates issue titles against the feature key convention

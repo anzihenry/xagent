@@ -1,0 +1,8 @@
+hooks:
+  after_tasks:
+    - extension: github-issue-publication
+      description: Convert generated tasks into GitHub issues for the active feature after reviewing tasks.md.
+      command: speckit.taskstoissues
+      prompt: Convert the generated tasks into GitHub issues for the current feature.
+      enabled: true
+      optional: true
