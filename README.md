@@ -247,3 +247,7 @@ This skeleton is prepared for:
 2. Add memory abstractions before choosing a concrete vector store.
 3. Add tracing hooks at the adapter boundary so observability remains framework-agnostic.
 4. Add policy enforcement for tool, network, and filesystem boundaries.
+
+## Delivery Workflow
+
+The repository's recommended Spec-Driven Development and GitHub operations model is documented in [docs/sdd-operations.md](docs/sdd-operations.md).

@@ -35,6 +35,7 @@ uv run ruff check .
 - Update documentation when behavior, configuration, or project structure changes.
 - Add new dependencies only when they are necessary for a concrete runtime or capability.
 - Preserve the framework-agnostic design of the project.
+- Follow the repository's SDD and delivery workflow in `docs/sdd-operations.md` for feature planning, project tracking, and issue usage.
 
 ## Pull Request Checklist
 
