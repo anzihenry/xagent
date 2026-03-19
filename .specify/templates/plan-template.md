@@ -31,7 +31,16 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- Core/contracts remain framework-agnostic; any runtime-specific code is
+  isolated to thin adapters.
+- Agent behavior, task metadata, and safety boundaries are represented in
+  validated config, not hidden in implementation code.
+- Required tests and validation for schema, config, factory, tool, and adapter
+  changes are identified.
+- Observability, safety boundary changes, and rollback or migration impact are
+  documented.
+- The proposed slice is the simplest increment that can deliver value; any
+  constitutional violation is recorded in Complexity Tracking.
 
 ## Project Structure
 

@@ -71,6 +71,7 @@ Add these labels:
 | `area:tooling` | package management, scripts, developer workflow |
 | `area:docs` | docs, contribution guides, process docs |
 | `area:ci` | GitHub Actions, release automation, repo governance |
+| `area:observability` | logging, tracing, auditability, runtime safety controls |
 
 ### Workflow Labels
 
@@ -81,6 +82,7 @@ Add these labels:
 | `blocked` | Work cannot continue due to dependency or decision |
 | `needs-spec` | Work is requested but not yet specified in Spec Kit |
 | `needs-clarification` | Spec or issue is underspecified |
+| `change-control` | Reviewer attention required for config, contract, or safety-impacting changes |
 
 ## Label Rollout Order
 

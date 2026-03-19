@@ -75,6 +75,29 @@
 - What happens when [boundary condition]?
 - How does system handle [error scenario]?
 
+## Operational & Change Impact *(mandatory)*
+
+### Configuration Impact
+
+- What agent, task, tool, or boundary changes are required in `config/`?
+- Which existing config values remain backward compatible, and which do not?
+
+### Contract Impact
+
+- What schema, factory, adapter, or tool contracts change?
+- Which consumers or execution paths could break if this change is wrong?
+
+### Observability & Safety Impact
+
+- What new logs, traces, validation errors, or audit signals are required?
+- Does this change alter tool access, filesystem access, network access, or
+  code execution boundaries?
+
+### Rollout & Change Control
+
+- How will this change be introduced, verified, and, if necessary, rolled back?
+- What must reviewers check explicitly before approving implementation?
+
 ## Requirements *(mandatory)*
 
 <!--

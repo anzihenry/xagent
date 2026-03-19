@@ -58,6 +58,7 @@ At project start or when the engineering policy changes:
 1. Run `/speckit.constitution`
 2. Record quality, testing, architecture, and review constraints
 3. Treat the constitution as the governing rulebook for all future features
+4. Keep Spec Kit templates and workflow docs synchronized when the constitution changes
 
 ### 2. Create a feature specification
 
@@ -79,6 +80,7 @@ After the feature spec is accepted:
 1. Run `/speckit.plan`
 2. Capture architecture, tech stack, file structure, and implementation constraints
 3. Keep runtime-specific choices aligned with XAgent's core rule: framework-specific code belongs in `src/xagent/adapters/`
+4. Complete the Constitution Check before research and again after design
 
 Expected artifacts:
 
@@ -93,6 +95,7 @@ Expected artifacts:
 2. Review generated `tasks.md`
 3. Ensure tasks are grouped by user story and contain exact file paths where possible
 4. Run `/speckit.analyze` before implementation when the feature is non-trivial
+5. Ensure tasks include required validation, observability, and change-control work for config, contract, and adapter changes
 
 Expected artifact:
 
@@ -131,6 +134,7 @@ After issues exist:
 2. Use PR keywords such as `fixes #123` where appropriate
 3. When PRs merge, allow linked implementation issues to close automatically
 4. Keep spec artifacts updated if implementation changes the agreed design
+5. Verify PR review covers config impact, contract impact, safety impact, and rollback considerations when applicable
 
 ## Feature Naming Convention
 
