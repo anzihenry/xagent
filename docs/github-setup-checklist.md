@@ -128,16 +128,20 @@ Options:
 
 Field type:
 
-- `Single select`
+- Built-in GitHub Project field
 
 Options:
 
-- `Inbox`
-- `Ready`
+- `Todo`
 - `In Progress`
-- `Blocked`
-- `In Review`
 - `Done`
+
+Usage rule:
+
+- Use `Status` as the only execution-state field in the Project.
+- Do not create a second custom status field such as `Delivery Status`.
+- Represent blocked work with the `blocked` label while keeping `Status = In Progress`.
+- Represent review activity through linked pull requests and saved views rather than a second state field.
 
 ### 3. Priority
 
@@ -245,7 +249,7 @@ review of config impact, contract impact, safety boundaries, or rollback.
 Configuration:
 
 - Layout: `Table`
-- Filter: `Status` is `Inbox` or `Ready`
+- Filter: `Status` is `Todo`
 - Sort: `Priority` ascending, then `Type`
 
 ### 2. Execution Board
@@ -272,14 +276,22 @@ Configuration:
 - Filter: `Change Scope` is not `None` or label is `change-control`
 - Sort: `Priority` ascending, then `Updated`
 
-### 5. Current Iteration
+### 5. Review Queue
+
+Configuration:
+
+- Layout: `Table`
+- Filter: `Status` is `In Progress` and `Linked pull requests` is not empty
+- Sort: `Updated` descending
+
+### 6. Current Iteration
 
 Configuration:
 
 - Layout: `Board`
 - Filter: current `Iteration`
 
-### 6. Roadmap
+### 7. Roadmap
 
 Configuration:
 
@@ -293,7 +305,7 @@ Configuration:
 Configure these first:
 
 1. auto-add issues from repository `anzihenry/xagent`
-2. default new items to `Status = Inbox`
+2. default new items to `Status = Todo`
 3. archive closed items automatically
 
 ### Optional Follow-Up Automations
@@ -302,7 +314,7 @@ Add later with Actions or API if needed:
 
 1. set `Type = Bug` when label `bug` is present
 2. set `Area = docs` when label `documentation` is present
-3. set `Status = In Review` when linked PR is open
+3. surface linked-PR work in the `Review Queue` view
 4. sync issue labels into Project fields
 
 ## Issue Creation Rules
@@ -315,7 +327,7 @@ Required metadata:
 
 - label `bug`
 - `Type = Bug`
-- `Status = Inbox`
+- `Status = Todo`
 
 Optional metadata:
 
@@ -381,6 +393,21 @@ Complete these in order:
 3. every implementation issue should reference a feature key
 4. bugs do not bypass the issue form
 5. Projects reflects status; spec documents reflect intent
+
+## Status Convention
+
+Use only the built-in GitHub Project `Status` field for execution state.
+
+- `Todo`: triaged and not yet started
+- `In Progress`: actively being implemented or reviewed
+- `Done`: completed and closed out
+
+Use labels and linked pull requests for supplemental state instead of creating a
+second status field.
+
+- add label `blocked` when work cannot proceed
+- use the `Review Queue` view to see items with linked pull requests
+- use `Change Scope` and `change-control` for constitution-sensitive review
 
 ## Optional Future Enhancements
 

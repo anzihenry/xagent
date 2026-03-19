@@ -169,13 +169,11 @@ Create these fields in the project:
    - `Task`
    - `Bug`
    - `Chore`
-2. `Status` (`single select`)
-   - `Inbox`
-   - `Ready`
+2. `Status` (built-in GitHub Project field)
+   - `Todo`
    - `In Progress`
-   - `Blocked`
-   - `In Review`
    - `Done`
+   - Use this as the only execution-state field; do not create a second custom status field
 3. `Priority` (`single select`)
    - `P0`
    - `P1`
@@ -194,11 +192,19 @@ Create these fields in the project:
    - `tooling`
    - `docs`
    - `ci`
+   - `observability`
 7. `Iteration` (`iteration`)
 8. `Target Release` (`text` or `single select`)
    - Example: `0.0.2`
 9. `Spec Link` (`text`)
    - Example: `specs/001-auth-bootstrap/spec.md`
+10. `Change Scope` (`single select`)
+   - `None`
+   - `Config`
+   - `Contract`
+   - `Safety`
+   - `Observability`
+   - `Multiple`
 
 ### Recommended Views
 
@@ -206,7 +212,7 @@ Create these saved views:
 
 1. `Backlog`
    - Layout: table
-   - Filter: `Status:Inbox,Ready`
+   - Filter: `Status:Todo`
 2. `Execution Board`
    - Layout: board
    - Group by: `Status`
@@ -214,10 +220,16 @@ Create these saved views:
 3. `Bug Triage`
    - Layout: table or board
    - Filter: `Type:Bug`
-4. `Current Iteration`
+4. `Change Control Review`
+   - Layout: table
+   - Filter: `Change Scope is not None` or label `change-control`
+5. `Review Queue`
+   - Layout: table
+   - Filter: `Status is In Progress` and linked pull requests exist
+6. `Current Iteration`
    - Layout: board
    - Filter: current `Iteration`
-5. `Roadmap`
+7. `Roadmap`
    - Layout: roadmap
    - Group by: `Feature` or `Target Release`
 
@@ -226,14 +238,30 @@ Create these saved views:
 Enable built-in or custom automation for:
 
 1. auto-add new issues from `anzihenry/xagent`
-2. default `Status = Inbox`
+2. default `Status = Todo`
 3. archive closed items automatically
 
 Optional later automation:
 
 1. set `Type = Bug` when label `bug` is present
 2. set `Area` based on labels
-3. add new PRs to project and place them in `In Review`
+3. add new PRs to project and surface them in the `Review Queue` view
+
+### Status Convention
+
+Use only the built-in GitHub Project `Status` field as the canonical execution
+state.
+
+- `Todo`: triaged and not started
+- `In Progress`: actively being implemented or reviewed
+- `Done`: completed and merged or otherwise closed out
+
+Use labels and linked pull requests for supplemental state instead of a second
+status field.
+
+- `blocked` label: work cannot currently proceed
+- linked pull request present: item is in active review flow
+- `change-control` label or `Change Scope != None`: constitution-sensitive review required
 
 ## GitHub Issue Model
 
