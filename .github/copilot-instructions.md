@@ -1,10 +1,11 @@
 - [x] Verify that the copilot-instructions.md file in the .github directory is created.
 - [x] Clarify Project Requirements: framework-agnostic enterprise AI agent scaffold, Python, uv, YAML config, adapter architecture.
 - [x] Scaffold the Project: created a src-layout uv project in the current workspace and renamed the package to `xagent`.
-- [x] Customize the Project: added core contracts, YAML config, adapter layer, factory, CLI, tests, GitHub workflow files, issue templates, PR template, `CONTRIBUTING.md`, and `LICENSE`.
+- [x] Customize the Project: added core contracts, YAML config, adapter layer, factory, CLI, tests, GitHub workflow files, issue templates, PR template, `CONTRIBUTING.md`, `LICENSE`, and Spec Kit project scaffolding.
 - [x] Install Required Extensions: no extensions required.
 - [x] Compile the Project: `uv sync`, `uv run pytest`, `uv run ruff check .`, and `uv run xagent ...` succeeded.
 - [x] Create and Run Task: skipped because the current scaffold does not require a VS Code task.
 - [x] Launch the Project: added a VS Code debug launch configuration for the `xagent` CLI using the workspace `.venv` interpreter.
 - [x] Ensure Documentation is Complete: README updated and this file cleaned of HTML comments.
 - [x] Publish the Project: repository created at `github.com/anzihenry/xagent` and `main` pushed to `origin/main`.
+- [x] Enable Spec-Driven Development: initialized Spec Kit in-repo with Copilot prompt and agent files under `.github/` plus project-local `.specify/` assets.

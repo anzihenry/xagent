@@ -251,3 +251,28 @@ This skeleton is prepared for:
 ## Delivery Workflow
 
 The repository's recommended Spec-Driven Development and GitHub operations model is documented in [docs/sdd-operations.md](docs/sdd-operations.md).
+
+## Spec Kit
+
+Spec Kit has been initialized in this repository for GitHub Copilot.
+
+Key project-local assets now include:
+
+- `.specify/` for Spec Kit scripts, templates, and project state
+- `.github/prompts/` for Spec Kit prompt entry points
+- `.github/agents/` for Spec Kit agent definitions
+
+Primary commands available in the Copilot workflow:
+
+- `/speckit.constitution`
+- `/speckit.specify`
+- `/speckit.plan`
+- `/speckit.tasks`
+- `/speckit.implement`
+
+Optional quality commands:
+
+- `/speckit.clarify`
+- `/speckit.analyze`
+- `/speckit.checklist`
+- `/speckit.taskstoissues`

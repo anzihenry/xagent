@@ -361,10 +361,9 @@ Minimum traceability rule:
 
 These are not mandatory on day one, but they are the next logical improvements:
 
-1. install Spec Kit in the repo and document the bootstrap command
-2. add a lightweight `specs/README.md` explaining feature directory naming
-3. add label setup automation or a one-time bootstrap script
-4. add a GitHub Action or script that syncs issue labels into Project fields if needed
+1. add a lightweight `specs/README.md` explaining feature directory naming
+2. add label setup automation or a one-time bootstrap script
+3. add a GitHub Action or script that syncs issue labels into Project fields if needed
 
 The concrete GitHub setup checklist for labels, Project fields, and recommended views lives in `docs/github-setup-checklist.md`.
 
